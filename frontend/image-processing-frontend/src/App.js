@@ -4,6 +4,7 @@ import ImageGallery from './components/ImageGallery';
 import './App.css';
 import ImageUploader from './components/ImageUploader';
 import Header from "./components/Header";
+import ImageGallery2 from "./components/ImageGallery2";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -12,11 +13,12 @@ const App = () => {
     <Router>
       <div className="App">
          <Header />
-        <h1>Image Gallery</h1>
         <Routes>
+            <Route path="/gallery/:UUID" element={<ImageGallery2 />} />
+
           <Route
             path="/gallery"
-            element={<ImageGallery images={images} />}
+            element={<ImageGallery2 images={images} />}
           />
           <Route path="/upload" element={<ImageUploader />} />
           <Route

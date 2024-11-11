@@ -40,11 +40,6 @@ const ImageUploader = () => {
   const [imageErrors, setImageErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-  // Validate all images whenever metadata changes
-  useEffect(() => {
-    validateAllImages();
-  }, [metadata]);
-
   const handleFileChange = (event) => {
     const selectedFiles = [...event.target.files];
     setFiles(selectedFiles);
@@ -76,19 +71,10 @@ const ImageUploader = () => {
   const hasAppliedFilters = (imageMetadata) => {
     const filters = imageMetadata.filters;
 
-    // Check resize filter
     const hasResize = filters.resize.width || filters.resize.height;
-
-    // Check crop filter
     const hasCrop = Object.values(filters.crop).some(value => value !== '');
-
-    // Check rotate filter
     const hasRotate = filters.rotate !== '';
-
-    // Check brightness filter
     const hasBrightness = filters.brightness.enabled && filters.brightness.value !== 0;
-
-    // Check other filters
     const hasGrayscale = filters.grayscale;
     const hasFlip = filters.flip !== '';
 
@@ -108,7 +94,6 @@ const ImageUploader = () => {
     });
 
     setImageErrors(newErrors);
-    setIsSubmitDisabled(hasErrors || metadata.length === 0);
     return !hasErrors;
   };
 
@@ -136,6 +121,7 @@ const ImageUploader = () => {
       newMetadata[index].filters[filter] = value;
     }
     setMetadata(newMetadata);
+    setImageErrors({});
   };
 
   const toggleAccordion = (index) => {
@@ -152,7 +138,6 @@ const ImageUploader = () => {
     return metadata.map(item => {
       const filters = [];
 
-      // Only add filters that have actual values
       if (item.filters.resize.width || item.filters.resize.height) {
         filters.push({
           filter_type: "resize",
@@ -213,6 +198,7 @@ const ImageUploader = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateAllImages()) {
+      setIsSubmitDisabled(true);
       return;
     }
 
@@ -227,15 +213,20 @@ const ImageUploader = () => {
     };
 
     formData.append('metadata', JSON.stringify(transformedData));
-console.log(transformedData)
+    console.log(transformedData);
+
     try {
-      // const response = await axios.post('http://localhost:8080/upload-images', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-      setImageErrors({});
-      alert('Images uploaded successfully!');
+      const response = await axios.post('http://localhost:8080/upload-images', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log(response)
+        if (response.status === 200) {
+            alert('Images uploaded successfully!');
+        } else {
+            alert('Failed to upload images. Server responded with a non-200 status code.');
+        }
     } catch (error) {
       alert('Failed to upload images.');
     }
@@ -462,7 +453,7 @@ console.log(transformedData)
             <button
               type="submit"
               className="submit-button"
-              disabled={isSubmitDisabled}
+              // disabled={isSubmitDisabled}
             >
               Upload Images
             </button>

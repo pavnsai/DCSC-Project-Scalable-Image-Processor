@@ -77,17 +77,30 @@
   padding: 1rem;
   background-color: #f7fafc;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* New styles for error state in accordion header */
+.accordion-header.has-error {
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
 }
 
 .accordion-header:hover {
   background-color: #edf2f7;
 }
 
+.accordion-header.has-error:hover {
+  background-color: #fed7d7;
+}
+
 .image-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-grow: 1;
+  /* Added to allow error message to fit */
+  flex-wrap: wrap;
 }
 
 .image-preview {
@@ -95,6 +108,7 @@
   height: 50px;
   border-radius: 4px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .image-preview img {
@@ -108,10 +122,20 @@
   color: #2d3748;
 }
 
+/* New styles for error message */
+.error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-left: auto;
+  padding-right: 1rem;
+}
+
 .accordion-icon {
   font-size: 0.875rem;
   color: #4a5568;
   transition: transform 0.2s;
+  flex-shrink: 0;
 }
 
 .accordion-icon.open {
@@ -139,11 +163,13 @@
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.5rem;
 }
+
 .brightness-control {
   margin-top: 8px;
 }
+
 .range-input-container {
-display: flex;
+  display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -159,14 +185,16 @@ display: flex;
   border-radius: 2px;
   min-width: 0;
 }
+
 .brightness-value-input {
   width: 60px;
   padding: 4px;
   border: 1px solid #ddd;
   border-radius: 4px;
   text-align: center;
-  flex-shrink: 0; /* Prevents the input from shrinking */
+  flex-shrink: 0;
 }
+
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -175,7 +203,7 @@ display: flex;
 }
 
 .checkbox-input {
-   margin: 0;
+  margin: 0;
   width: 16px;
   height: 16px;
 }
@@ -203,11 +231,28 @@ display: flex;
   border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, opacity 0.2s;
 }
 
-.submit-button:hover {
+/* New styles for disabled submit button */
+.submit-button:disabled {
+  background-color: #9ae6b4;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.submit-button:not(:disabled):hover {
   background-color: #38a169;
+}
+
+/* Error alert styles */
+.error-alert {
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  color: #e53e3e;
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 640px) {
@@ -225,5 +270,18 @@ display: flex;
 
   .submit-button {
     width: 100%;
+  }
+
+  /* Mobile-specific error message styling */
+  .error-message {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    padding-right: 0;
+  }
+
+  .image-info {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
