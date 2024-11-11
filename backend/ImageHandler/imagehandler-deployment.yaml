@@ -19,5 +19,5 @@ spec:
         - containerPort: 5000
         env:
         - name: IMAGE_PORT
-          value: "6379"
+          value: "5000"
 ---
