@@ -8,13 +8,20 @@ from io import BytesIO
 from PIL import Image
 from datetime import timedelta
 import os
+
+# Get the absolute path to the credentials file
+current_dir = os.path.dirname(os.path.abspath(__file__))
+print(current_dir)
+credentials_path = os.path.join(current_dir, "dcsc-project-440602-9412462c618e.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+# import os
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./dcsc-project-440602-9412462c618e.json"
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 storage_client = storage.Client(project="dcsc-project-440602")
 firestore_client = firestore.Client(project="dcsc-project-440602")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "dcsc-project-440602-9412462c618e.json"
 image_port = int(os.getenv("IMAGE_PORT", 5000))
 
 # Configuration
@@ -24,7 +31,7 @@ INTERACTION_POD_URL = 'http://interaction-pod-service/api/v1/metadata'
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-logging.info("pod is running")
+logging.info(f"pod is running")
 
 # Helper function to upload image to Google Cloud Storage
 def upload_to_gcs(image_file, batch_uuid, image_name):

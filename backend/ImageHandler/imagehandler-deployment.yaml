@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: image-handler
-        image: pavan1820/image-handler:v1
+        image: pavan1820/image-handler:v2
         ports:
         - containerPort: 5000
         env:
