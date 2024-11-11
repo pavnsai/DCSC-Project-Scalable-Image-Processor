@@ -8,13 +8,14 @@ from io import BytesIO
 from PIL import Image
 from datetime import timedelta
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "dcsc-project-440602-9412462c618e.json"
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 storage_client = storage.Client(project="dcsc-project-440602")
 firestore_client = firestore.Client(project="dcsc-project-440602")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "dcsc-project-440602-9412462c618e.json"
+image_port = int(os.getenv("IMAGE_PORT", 5000))
 
 # Configuration
 BUCKET_NAME = 'cu-image-flow'
@@ -23,6 +24,7 @@ INTERACTION_POD_URL = 'http://interaction-pod-service/api/v1/metadata'
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
+logging.info("pod is running")
 
 # Helper function to upload image to Google Cloud Storage
 def upload_to_gcs(image_file, batch_uuid, image_name):
@@ -70,27 +72,48 @@ def get_output_urls():
         return jsonify({"error": "UUID is required"}), 400
 
     try:
-        # Define the folder path for output images within the specified UUID
+        # Define folder paths for input and output images within the specified UUID
+        input_folder = f"{uuid}/input/"
         output_folder = f"{uuid}/output/"
 
-        # Initialize the bucket and list blobs (files) in the output folder
+        # Initialize the bucket and list blobs (files) in the input and output folders
         bucket = storage_client.bucket(BUCKET_NAME)
-        blobs = bucket.list_blobs(prefix=output_folder)
 
-        # Generate pre-signed URLs for each blob in the output folder
-        output_urls = []
-        for blob in blobs:
-            # Generate a pre-signed URL with an expiration time (e.g., 1 hour)
+        # Create dictionaries to map file names to URLs for both input and output folders
+        input_urls = {}
+        output_urls = {}
+
+        # List blobs in input folder and store URLs with file names
+        input_blobs = bucket.list_blobs(prefix=input_folder)
+        for blob in input_blobs:
             if blob.name.endswith("/"):
-                continue
-            url = blob.generate_signed_url(expiration=timedelta(hours=1))
-            output_urls.append({"file_name": blob.name, "url": url})
+                continue  # Skip folder paths
+            file_name = os.path.basename(blob.name)
+            input_urls[file_name] = blob.generate_signed_url(expiration=timedelta(hours=1))
 
-        # Check if output URLs were found, if not, return an error message
-        if not output_urls:
-            return jsonify({"error": "No output images found for the given UUID"}), 404
+        # List blobs in output folder and store URLs with file names
+        output_blobs = bucket.list_blobs(prefix=output_folder)
+        for blob in output_blobs:
+            if blob.name.endswith("/"):
+                continue  # Skip folder paths
+            file_name = os.path.basename(blob.name)
+            output_urls[file_name] = blob.generate_signed_url(expiration=timedelta(hours=1))
 
-        return jsonify({"UUID": uuid, "output_urls": output_urls}), 200
+        # Pair images by file name and prepare the response format expected by UI
+        image_pairs = []
+        for file_name, input_url in input_urls.items():
+            if file_name in output_urls:
+                image_pairs.append({
+                    "file_name": file_name,
+                    "before_url": input_url,
+                    "after_url": output_urls[file_name]
+                })
+
+        # Check if any pairs were found, if not, return an error message
+        if not image_pairs:
+            return jsonify({"error": "No matching image pairs found for the given UUID"}), 404
+
+        return jsonify({"UUID": uuid, "image_pairs": image_pairs}), 200
 
     except Exception as e:
         logging.error(f"Failed to retrieve output URLs for UUID {uuid}: {e}")
@@ -207,4 +230,4 @@ def upload_images():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=image_port)

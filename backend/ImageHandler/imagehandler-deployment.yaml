@@ -1,0 +1,23 @@
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: image-handler
+spec:
+  selector:
+    matchLabels:
+      app: image-handler
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: image-handler
+    spec:
+      containers:
+      - name: image-handler
+        image: pavan1820/image-handler:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: IMAGE_PORT
+          value: "6379"
+---
