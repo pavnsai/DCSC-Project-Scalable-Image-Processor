@@ -15,6 +15,7 @@ spec:
       containers:
       - name: image-handler
         image: pavan1820/image-handler:v2
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:
