@@ -177,6 +177,7 @@ def upload_images():
             })
 
     response = requests.get(f"{INTERACTION_POD_URL}/process_batch?batch_id={batch_uuid}")
+    print(f"response: {response}")
     return response.json()
     # return jsonify(response_data), 200
 

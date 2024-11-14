@@ -30,7 +30,7 @@ firestore_client = firestore.Client(project=PROJECT_ID)
 
 def get_batch_details(batch_id):
     try:
-        doc_ref = firestore_client.collection(BATCH_TABLE_NAME).document('0cad7e97-e6c5-4ebd-b4df-67479763d869')
+        doc_ref = firestore_client.collection(BATCH_TABLE_NAME).document(batch_id)
         # Retrieve the document
         doc = doc_ref.get()
 
@@ -128,6 +128,7 @@ def push_to_email_notification_pub_sub(batch_id):
 # DONE
 @app.route('/process_batch', methods=['GET'])
 def process_batch():
+    print("coming to process images")
     client_ip = request.remote_addr
     logging.debug(f"Received request from IP: {client_ip}")
     try:
