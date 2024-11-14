@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: image-handler
-        image: pavan1820/image-handler:v4
+        image: pavan1820/image-handler:v5
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -26,7 +26,7 @@ spec:
         - name: GCP_BUCKET_NAME
           value: "cu-image-flow"
         - name: INTERACTION_POD_URL
-          value: "http://interaction-pod:8080"
+          value: "http://interaction-service:8080"
         - name: BATCH_TABLE_NAME
           value: "batch_uploads"
         - name: IMAGE_METADATA_TABLE_NAME
