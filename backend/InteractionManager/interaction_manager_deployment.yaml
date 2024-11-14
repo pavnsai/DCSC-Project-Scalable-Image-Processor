@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interaction-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interaction
+  template:
+    metadata:
+      labels:
+        app: interaction
+    spec:
+      containers:
+        - name: interaction
+          image: pavan1820/interaction-manager:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GCP_PROJECT
+              value: "dcsc-project-440602"
+            - name: BATCH_TABLE_NAME
+              value: "batch_uploads"
+            - name: IMAGE_METADATA_TABLE_NAME
+              value: "image_metadata"

@@ -4,25 +4,27 @@ from google.cloud import storage, firestore
 from flask import Flask, request, jsonify
 import json
 import os
+import requests
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 print(current_dir)
 credentials_path = os.path.join(current_dir, "dcsc-project-440602-9412462c618e.json")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-from io import BytesIO
-from PIL import Image
 from datetime import timedelta
 from flask_cors import CORS
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
-storage_client = storage.Client(project="dcsc-project-440602")
-firestore_client = firestore.Client(project="dcsc-project-440602")
+GCP_PROJECT = os.getenv("GCP_PROJECT", "dcsc-project-440602")  # default for Kubernetes service
+storage_client = storage.Client(project=GCP_PROJECT)
+firestore_client = firestore.Client(project=GCP_PROJECT)
 image_port = int(os.getenv("IMAGE_PORT", 5000))
-
+INTERACTION_POD_URL = os.getenv("INTERACTION_POD_URL", "http://interaction-pod:8080")  # default for Kubernetes service
+BATCH_TABLE_NAME=os.getenv('BATCH_TABLE_NAME','batch_uploads')
+IMAGE_METADATA_TABLE_NAME=os.getenv('IMAGE_METADATA_TABLE_NAME','image_metadata')
 # Configuration
-BUCKET_NAME = 'cu-image-flow'
+BUCKET_NAME = os.getenv("GCP_BUCKET_NAME", "cu-image-flow")
 logging.basicConfig(level=logging.INFO)
 
 # Helper function to upload image to Google Cloud Storage
@@ -103,7 +105,7 @@ def get_images_by_status():
     is_processed = is_processed.lower() == 'true'
 
     try:
-        image_metadata_ref = firestore_client.collection("image_metadata")
+        image_metadata_ref = firestore_client.collection(IMAGE_METADATA_TABLE_NAME)
         query = image_metadata_ref.where("batch_id", "==", batch_id).where("is_processed", "==", is_processed)
         images = [doc.to_dict() for doc in query.stream()]
 
@@ -140,7 +142,7 @@ def upload_images():
         "image_count": len(files),
         "job_status": "Pending"
     }
-    save_to_firestore("batch_uploads", firestore_data_batch_uploads, doc_id=batch_uuid)
+    save_to_firestore(BATCH_TABLE_NAME, firestore_data_batch_uploads, doc_id=batch_uuid)
 
     response_data = []
     for image_file, image_metadata in zip(files, images_metadata):
@@ -157,7 +159,7 @@ def upload_images():
                 "image_name": image_name,
                 "is_processed": False
             }
-            save_to_firestore("image_metadata", firestore_data_image_metadata, doc_id=doc_id)
+            save_to_firestore(IMAGE_METADATA_TABLE_NAME, firestore_data_image_metadata, doc_id=doc_id)
 
             response_data.append({
                 "image_name": image_name,
@@ -174,7 +176,9 @@ def upload_images():
                 "status": "error"
             })
 
-    return jsonify(response_data), 200
+    response = requests.get(f"{INTERACTION_POD_URL}/process_batch?batch_id={batch_uuid}")
+    return response.json()
+    # return jsonify(response_data), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=image_port)

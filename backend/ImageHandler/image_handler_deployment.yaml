@@ -21,6 +21,16 @@ spec:
         env:
         - name: IMAGE_PORT
           value: "5000"
+        - name: GCP_PROJECT
+          value: "dcsc-project-440602"
+        - name: GCP_BUCKET_NAME
+          value: "cu-image-flow"
+        - name: INTERACTION_POD_URL
+          value: "http://interaction-pod:8080"
+        - name: BATCH_TABLE_NAME
+          value: "batch_uploads"
+        - name: IMAGE_METADATA_TABLE_NAME
+          value: "image_metadata"
         resources:
           requests:
             memory: "64Mi"

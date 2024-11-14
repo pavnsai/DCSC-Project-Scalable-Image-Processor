@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir google-cloud-storage google-cloud-firestore Flask
 WORKDIR /app
 
 # Copy both the Python script and the credentials file
-COPY imageHandler.py /app/
+COPY image_handler.py /app/
 COPY dcsc-project-440602-9412462c618e.json /app/
 
 # Set proper permissions for the credentials file
@@ -17,4 +17,4 @@ RUN chmod 600 /app/dcsc-project-440602-9412462c618e.json
 EXPOSE 5000
 
 # Run the application
-ENTRYPOINT ["python", "-u", "imageHandler.py"]
+ENTRYPOINT ["python", "-u", "image_handler.py"]
