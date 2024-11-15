@@ -115,13 +115,14 @@ def apply_filters(image_data, filters):
 
     # Save the processed image to bytes
     output_io = io.BytesIO()
-
+    logging.info(f"image format {image.format}")
     # Ensure the processed image is saved in the correct format
     if image.format in ['JPEG', 'JPG']:
         image.save(output_io, format='JPEG')
     elif image.format == 'PNG':
         image.save(output_io, format='PNG')
     else:
+        image.save(output_io, format='PNG')
         logging.error(f"Unsupported format for saving: {image.format}")
         raise ValueError(f"Unsupported format: {image.format}")
     output_io.seek(0)
