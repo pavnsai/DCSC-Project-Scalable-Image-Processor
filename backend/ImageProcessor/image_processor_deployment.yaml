@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: image-processor
-          image: pavan1820/image-processor:v6
+          image: pavan1820/image-processor:v5
           volumeMounts:
             - name: gcp-creds
               mountPath: /var/secrets/google
