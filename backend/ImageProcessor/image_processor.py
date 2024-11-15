@@ -1,10 +1,3 @@
-import os
-import logging
-import io
-from google.cloud import pubsub_v1, storage
-from flask import jsonify
-import json
-from flask import Flask, request, jsonify
 from google.cloud import storage
 from google.cloud import pubsub_v1
 from PIL import Image, ImageEnhance, ImageFilter
@@ -13,10 +6,7 @@ import os
 import logging
 import json
 from dotenv import load_dotenv
-import sys
 import requests
-import mimetypes
-import time
 load_dotenv()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 print(current_dir)
@@ -39,51 +29,51 @@ logging.basicConfig(level=logging.INFO)
 
 def callback(message):
     try:
-        logging.info(f"Received message: {message.data.decode('utf-8')}")
-        time.sleep(15)  # Add a delay of 15 seconds
-        logging.info("Simulated processing completed.")
-        # data = message.data.decode('utf-8')
-        # request_data = json.loads(data)
-        #
-        # doc_id = request_data['doc_id']
-        # image_name = request_data['image_name']
-        # filters = request_data['filters']
-        # # email = request_data['email']
-        # batch_id = request_data['batch_id']
-        #
-        # # Determine the file extension and MIME type
-        # file_extension = image_name.split('.')[-1].lower()
-        # logging.info(f"Processing image {image_name} with extension {file_extension}")
-        #
-        # # Validate the file extension
-        # valid_extensions = ['jpg', 'jpeg', 'png']
-        # if file_extension not in valid_extensions:
-        #     logging.error(f"Error processing {image_name}: unsupported file extension {file_extension}")
-        #     message.nack()  # Reject message and do not process unsupported image formats
-        #     return
-        #
-        # # Download the image from Google Cloud Storage
-        # bucket = storage_client.bucket(BUCKET_NAME)
-        # blob = bucket.blob(f'{batch_id}/input/{image_name}')  # Keep the extension in the path
-        # logging.info(f"Downloading image from GCS: {batch_id}/input/{image_name}")
-        # image_data = blob.download_as_bytes()
-        #
-        # # Apply specified filters
-        # logging.info(f"Applying filters: {filters}")
-        # processed_image = apply_filters(image_data, filters)
-        # logging.info(f"Processed image size: {len(processed_image)} bytes")
-        # # Upload the processed image to the output folder in GCS
-        # output_bucket = storage_client.bucket(BUCKET_NAME)
-        # output_blob = output_bucket.blob(f'{batch_id}/output/{image_name}')  # Keep the extension in the path
-        # logging.info(f"Uploading processed image to GCS: {batch_id}/output/{image_name}")
-        # output_blob.upload_from_file(io.BytesIO(processed_image), content_type=f'image/{file_extension}')
+        # logging.info(f"Received message: {message.data.decode('utf-8')}")
+        # time.sleep(15)  # Add a delay of 15 seconds
+        # logging.info("Simulated processing completed.")
+        data = message.data.decode('utf-8')
+        request_data = json.loads(data)
+
+        doc_id = request_data['doc_id']
+        image_name = request_data['image_name']
+        filters = request_data['filters']
+        # email = request_data['email']
+        batch_id = request_data['batch_id']
+
+        # Determine the file extension and MIME type
+        file_extension = image_name.split('.')[-1].lower()
+        logging.info(f"Processing image {image_name} with extension {file_extension}")
+
+        # Validate the file extension
+        valid_extensions = ['jpg', 'jpeg', 'png']
+        if file_extension not in valid_extensions:
+            logging.error(f"Error processing {image_name}: unsupported file extension {file_extension}")
+            message.nack()  # Reject message and do not process unsupported image formats
+            return
+
+        # Download the image from Google Cloud Storage
+        bucket = storage_client.bucket(BUCKET_NAME)
+        blob = bucket.blob(f'{batch_id}/input/{image_name}')  # Keep the extension in the path
+        logging.info(f"Downloading image from GCS: {batch_id}/input/{image_name}")
+        image_data = blob.download_as_bytes()
+
+        # Apply specified filters
+        logging.info(f"Applying filters: {filters}")
+        processed_image = apply_filters(image_data, filters)
+        logging.info(f"Processed image size: {len(processed_image)} bytes")
+        # Upload the processed image to the output folder in GCS
+        output_bucket = storage_client.bucket(BUCKET_NAME)
+        output_blob = output_bucket.blob(f'{batch_id}/output/{image_name}')  # Keep the extension in the path
+        logging.info(f"Uploading processed image to GCS: {batch_id}/output/{image_name}")
+        output_blob.upload_from_file(io.BytesIO(processed_image), content_type=f'image/{file_extension}')
 
         # Update the status in the interaction service
-        # logging.info(f"Updating image status for doc_id {doc_id} and batch_id {batch_id}")
-        # update_image_status_to_interaction_service(doc_id, batch_id)
+        logging.info(f"Updating image status for doc_id {doc_id} and batch_id {batch_id}")
+        update_image_status_to_interaction_service(doc_id, batch_id)
 
         message.ack()  # Acknowledge the message after successful processing
-        # logging.info(f"Successfully processed message for {image_name}")
+        logging.info(f"Successfully processed message for {image_name}")
 
     except Exception as e:
         logging.error(f"Error processing message: {e}")
