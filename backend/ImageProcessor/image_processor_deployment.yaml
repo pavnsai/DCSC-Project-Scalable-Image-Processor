@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: image-processor
+      app: image-processor-deployment
   template:
     metadata:
       labels:
-        app: image-processor
+        app: image-processor-deployment
     spec:
       containers:
         - name: image-processor
@@ -26,3 +26,8 @@ spec:
               value: "image-processing-queue-sub"
             - name: INTERACTION_POD_URL
               value: "http://interaction-service:8080"
+            - name: GOOGLE_APPLICATION_CREDENTIALS_JSON
+              valueFrom:
+                secretKeyRef:
+                  name: pubsub-secret
+                  key: GOOGLE_APPLICATION_CREDENTIALS_JSON

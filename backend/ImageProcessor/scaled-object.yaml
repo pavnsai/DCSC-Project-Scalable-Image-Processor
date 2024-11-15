@@ -4,18 +4,10 @@ metadata:
   name: image-processor-scaler
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
     name: image-processor-deployment
-  minReplicaCount: 0
-  maxReplicaCount: 10
-  pollingInterval: 15
-  cooldownPeriod: 30
   triggers:
-    - type: gcp-pubsub
-      authenticationRef:
-        name: gcp-credentials
-      metadata:
-        subscriptionSize: "5"
-        subscriptionName: image-processing-queue-sub
-        mode: SubscriptionSize
+  - type: gcp-pubsub
+    metadata:
+      subscriptionSize: "5"
+      subscriptionName: "image-processing-queue-sub" # Required
+      credentialsFromEnv: GOOGLE_APPLICATION_CREDENTIALS_JSON # Required
