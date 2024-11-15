@@ -124,7 +124,7 @@ def apply_filters(image_data, filters):
     else:
         image.save(output_io, format='PNG')
         logging.error(f"Unsupported format for saving: {image.format}")
-        raise ValueError(f"Unsupported format: {image.format}")
+        # raise ValueError(f"Unsupported format: {image.format}")
     output_io.seek(0)
     logging.info(f"Finished applying filters")
     return output_io.getvalue()

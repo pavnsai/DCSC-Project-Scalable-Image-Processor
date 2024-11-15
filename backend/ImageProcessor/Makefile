@@ -1,4 +1,4 @@
-VERSION=v3
+VERSION=v4
 DOCKERUSER=pavan1820
 
 build:
