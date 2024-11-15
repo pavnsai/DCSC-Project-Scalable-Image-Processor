@@ -19,10 +19,10 @@ CORS(app)
 
 
 # Environment variables
-PROJECT_ID = os.getenv('GCP_PROJECT','dcsc-project-440602')
-BUCKET_NAME = os.getenv('GCP_BUCKET_NAME','cu-image-flow')
-EMAIL_PUBSUB_TOPIC = os.getenv('EMAIL_PUBSUB_TOPIC')
-IMAGE_PUBSUB_TOPIC = os.getenv('IMAGE_PUBSUB_TOPIC')
+PROJECT_ID = os.getenv('GCP_PROJECT', 'dcsc-project-440602')
+BUCKET_NAME = os.getenv('GCP_BUCKET_NAME', 'cu-image-flow')
+EMAIL_PUBSUB_TOPIC = os.getenv('EMAIL_PUBSUB_TOPIC', 'projects/dcsc-project-440602/topics/email-notification-pub-sub')
+IMAGE_PUBSUB_TOPIC = os.getenv('IMAGE_PUBSUB_TOPIC', 'projects/dcsc-project-440602/topics/image-processing-queue')
 BATCH_TABLE_NAME=os.getenv('BATCH_TABLE_NAME','batch_uploads')
 IMAGE_METADATA_TABLE_NAME=os.getenv('IMAGE_METADATA_TABLE_NAME','image_metadata')
 

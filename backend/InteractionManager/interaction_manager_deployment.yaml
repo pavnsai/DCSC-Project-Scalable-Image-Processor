@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: interaction
-          image: pavan1820/interaction-manager:v1
+          image: pavan1820/interaction-manager:v2
           ports:
             - containerPort: 8080
           env:
@@ -24,3 +24,7 @@ spec:
               value: "batch_uploads"
             - name: IMAGE_METADATA_TABLE_NAME
               value: "image_metadata"
+            - name: EMAIL_PUBSUB_TOPIC
+              value: "projects/dcsc-project-440602/topics/email-notification-pub-sub"
+            - name: IMAGE_PUBSUB_TOPIC
+              value: "projects/dcsc-project-440602/topics/image-processing-queue"
