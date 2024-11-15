@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: interaction
-          image: pavan1820/interaction-manager:v3
+          image: pavan1820/interaction-manager:v4
           ports:
             - containerPort: 8080
           env:

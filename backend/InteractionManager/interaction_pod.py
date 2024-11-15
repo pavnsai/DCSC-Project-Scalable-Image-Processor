@@ -12,7 +12,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 print(current_dir)
 credentials_path = os.path.join(current_dir, "dcsc-project-440602-9412462c618e.json")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-
+logging.basicConfig(level=logging.INFO)
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
