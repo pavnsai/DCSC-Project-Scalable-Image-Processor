@@ -25,4 +25,4 @@ spec:
             - name: PUBSUB_SUBSCRIPTION
               value: "image-processing-queue-sub"
             - name: INTERACTION_POD_URL
-              value: "http://interaction-pod:8080"
+              value: "http://interaction-service:8080"
