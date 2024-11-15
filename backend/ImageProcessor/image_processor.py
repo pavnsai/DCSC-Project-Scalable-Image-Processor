@@ -18,6 +18,10 @@ import requests
 import mimetypes
 
 load_dotenv()
+current_dir = os.path.dirname(os.path.abspath(__file__))
+print(current_dir)
+credentials_path = os.path.join(current_dir, "dcsc-project-440602-9412462c618e.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 
 # Load environment variables
 PROJECT_ID = os.getenv('GCP_PROJECT', 'dcsc-project-440602')
