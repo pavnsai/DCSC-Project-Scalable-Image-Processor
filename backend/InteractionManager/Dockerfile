@@ -12,7 +12,10 @@ WORKDIR /app
 # Copy only necessary files
 COPY interaction_pod.py /app/
 COPY requirements.txt /app/
+COPY dcsc-project-440602-9412462c618e.json /app/
 
+# Set proper permissions for the credentials file
+RUN chmod 600 /app/dcsc-project-440602-9412462c618e.json
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
