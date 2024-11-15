@@ -8,7 +8,10 @@ import logging
 import json
 from dotenv import load_dotenv
 from flask_cors import CORS
-
+current_dir = os.path.dirname(os.path.abspath(__file__))
+print(current_dir)
+credentials_path = os.path.join(current_dir, "dcsc-project-440602-9412462c618e.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 
 load_dotenv()
 app = Flask(__name__)
@@ -128,14 +131,16 @@ def push_to_email_notification_pub_sub(batch_id):
 # DONE
 @app.route('/process_batch', methods=['GET'])
 def process_batch():
-    print("coming to process images")
+    logging.info("coming to process images")
     client_ip = request.remote_addr
     logging.debug(f"Received request from IP: {client_ip}")
     try:
         batch_id = request.args.get('batch_id')
+        logging.info(f"processing for batch: {batch_id} for the image upload")
         batch_obj=get_batch_details(batch_id)
         email = batch_obj['email']
         image_data_list = get_formatted_metadata_by_batch_id(batch_id, email)
+        logging.info(f"after metadata: {image_data_list}")
         for image_data in image_data_list:
             push_to_image_pub_sub(image_data)
 
