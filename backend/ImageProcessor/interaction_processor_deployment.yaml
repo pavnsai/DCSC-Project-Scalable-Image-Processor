@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-processor-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-processor
+  template:
+    metadata:
+      labels:
+        app: image-processor
+    spec:
+      containers:
+        - name: image-processor
+          image: pavan1820/image-processor:v1
+          env:
+            - name: GCP_PROJECT
+              value: "dcsc-project-440602"
+            - name: GCP_BUCKET_NAME
+              value: "cu-image-flow"
+            - name: IMAGE_PUBSUB_TOPIC
+              value: "projects/dcsc-project-440602/topics/image-processing-queue"
+            - name: PUBSUB_SUBSCRIPTION
+              value: "image-processing-queue-sub"
+            - name: INTERACTION_POD_URL
+              value: "http://interaction-pod:8080"

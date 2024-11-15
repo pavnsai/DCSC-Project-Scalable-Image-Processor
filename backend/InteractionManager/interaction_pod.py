@@ -157,7 +157,7 @@ def process_batch():
 @app.route('/update_image_status', methods=['GET'])
 def update_image_status():
     client_ip = request.remote_addr
-    logging.debug(f"Received request from IP: {client_ip}")
+    logging.info(f"Received request from IP: {client_ip}")
     try:
         image_doc_id = request.args.get('doc_id')
         batch_id= request.args.get('batch_id')
