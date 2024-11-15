@@ -69,7 +69,7 @@ def callback(message):
         # Apply specified filters
         logging.info(f"Applying filters: {filters}")
         processed_image = apply_filters(image_data, filters)
-
+        logging.info(f"Processed image size: {len(processed_image)} bytes")
         # Upload the processed image to the output folder in GCS
         output_bucket = storage_client.bucket(BUCKET_NAME)
         output_blob = output_bucket.blob(f'{batch_id}/output/{image_name}')  # Keep the extension in the path
@@ -121,6 +121,9 @@ def apply_filters(image_data, filters):
         image.save(output_io, format='JPEG')
     elif image.format == 'PNG':
         image.save(output_io, format='PNG')
+    else:
+        logging.error(f"Unsupported format for saving: {image.format}")
+        raise ValueError(f"Unsupported format: {image.format}")
     output_io.seek(0)
     logging.info(f"Finished applying filters")
     return output_io.getvalue()
