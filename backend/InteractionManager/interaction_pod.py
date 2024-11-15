@@ -96,7 +96,7 @@ def push_to_image_pub_sub(message_data):
         future = publisher.publish(IMAGE_PUBSUB_TOPIC, data)
         future.result()  # Block until the message is published
         print("Pushed to Image Processing Pub/Sub")
-        logging.debug("Pushed to Image Processing Pub/Sub")
+        logging.info("Pushed to Image Processing Pub/Sub")
         
     except Exception as e:
         print(str(e))
