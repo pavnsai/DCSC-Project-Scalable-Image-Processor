@@ -15,9 +15,6 @@ spec:
       containers:
         - name: image-processor
           image: pavan1820/image-processor:v5
-          volumeMounts:
-            - name: gcp-creds
-              mountPath: /var/secrets/google
           env:
             - name: GCP_PROJECT
               value: "dcsc-project-440602"
@@ -29,9 +26,3 @@ spec:
               value: "image-processing-queue-sub"
             - name: INTERACTION_POD_URL
               value: "http://interaction-service:8080"
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/gcp-credentials.json
-      volumes:
-        - name: gcp-creds
-          secret:
-            secretName: gcp-credentials

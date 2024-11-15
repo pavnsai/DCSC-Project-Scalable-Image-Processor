@@ -13,10 +13,9 @@ spec:
   cooldownPeriod: 30
   triggers:
     - type: gcp-pubsub
+      authenticationRef:
+        name: gcp-credentials
       metadata:
-        mode: SubscriptionSize
-        value: "5"
+        subscriptionSize: "5"
         subscriptionName: image-processing-queue-sub
-        projectId: dcsc-project-440602
-        credentialsFromEnv: GOOGLE_APPLICATION_CREDENTIALS
-        identityOwner: pod
+        mode: SubscriptionSize
