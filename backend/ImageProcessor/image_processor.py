@@ -5,6 +5,7 @@ import io
 import os
 import logging
 import json
+import time
 from dotenv import load_dotenv
 import requests
 load_dotenv()
@@ -30,7 +31,7 @@ logging.basicConfig(level=logging.INFO)
 def callback(message):
     try:
         logging.info(f"Received message: {message.data.decode('utf-8')}")
-        # time.sleep(15)  # Add a delay of 15 seconds
+        time.sleep(15)  # Add a delay of 15 seconds
         # logging.info("Simulated processing completed.")
         data = message.data.decode('utf-8')
         request_data = json.loads(data)

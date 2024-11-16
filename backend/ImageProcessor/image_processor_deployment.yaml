@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: image-processor
-          image: pavan1820/image-processor:v6
+          image: pavan1820/image-processor:v7
           env:
             - name: GCP_PROJECT
               value: "dcsc-project-440602"
