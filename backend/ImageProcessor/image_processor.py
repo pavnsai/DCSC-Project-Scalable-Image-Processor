@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO)
 
 def callback(message):
     try:
-        # logging.info(f"Received message: {message.data.decode('utf-8')}")
+        logging.info(f"Received message: {message.data.decode('utf-8')}")
         # time.sleep(15)  # Add a delay of 15 seconds
         # logging.info("Simulated processing completed.")
         data = message.data.decode('utf-8')
