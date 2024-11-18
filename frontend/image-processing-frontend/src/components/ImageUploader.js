@@ -216,7 +216,12 @@ const ImageUploader = () => {
     console.log(transformedData);
 
     try {
-      const response = await axios.post('http://localhost:8080/upload-images', formData, {
+      // const response = await axios.post('http://localhost:5000/upload-images', formData, {
+      //       headers: {
+      //           'Content-Type': 'multipart/form-data'
+      //       }
+      //   });
+        const response = await axios.post('http://34.66.13.157/upload-images', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

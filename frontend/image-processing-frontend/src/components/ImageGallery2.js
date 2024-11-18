@@ -72,7 +72,7 @@ const ImageGallery2 = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/get-processed-images?UUID=${uuidToFetch}`);
+      const response = await fetch(`http://34.66.13.157/get-processed-images?batch_id=${uuidToFetch}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

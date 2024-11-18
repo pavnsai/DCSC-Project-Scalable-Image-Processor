@@ -40,7 +40,7 @@ const ImageGallery = () => {
 
   const fetchImages = async (uuidToFetch) => {
     try {
-      const response = await fetch(`http://localhost:8080/get-processed-images?UUID=${uuidToFetch}`);
+      const response = await fetch(`http://localhost:5000/get-processed-images?batch_id=${uuidToFetch}`);
       const data = await response.json();
       setImages(data.output_urls || []);
     } catch (error) {

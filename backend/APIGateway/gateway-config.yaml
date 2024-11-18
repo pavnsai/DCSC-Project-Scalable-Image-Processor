@@ -13,7 +13,7 @@ paths:
       summary: Upload images
       operationId: uploadImages
       x-google-backend:
-        address: http://35-238-241-153.nip.io/upload-images
+        address: http://34.66.13.157.nip.io/upload-images
       responses:
         '200':
           description: Successful response
@@ -22,7 +22,7 @@ paths:
       summary: Get processed images
       operationId: getProcessedImages
       x-google-backend:
-        address: http://35-238-241-153.nip.io/get-processed-images
+        address: http://34.66.13.157.nip.io/get-processed-images
       responses:
         '200':
           description: Successful response
@@ -31,7 +31,7 @@ paths:
       summary: Get images by status
       operationId: getImagesByStatus
       x-google-backend:
-        address: http://35-238-241-153.nip.io/get-images-by-status
+        address: http://34.66.13.157.nip.io/get-images-by-status
       responses:
         '200':
           description: Successful response
