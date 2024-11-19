@@ -5,7 +5,7 @@ const HomePage = () => {
     return (
         <div className="homepage">
             <header className="homepage-header">
-                <h1>Scalable Image Processor App</h1>
+                <h1>ImageFlow: Scalable Image Processor App</h1>
                 <p>
                     A scalable and efficient image processing platform designed to make
                     your image editing experience seamless and user-friendly.

@@ -1,7 +1,7 @@
 .header {
   background: linear-gradient(135deg, #2c3e50, #4a69bd);
   color: white;
-  padding: 15px 30px;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,7 +11,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   font-family: 'Arial', sans-serif;
 }
+.header .logo {
+  display: flex;
+  align-items: center;
+}
 
+.logo-image {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
 /* Logo Styling */
 .header .logo h1 {
   margin: 0;
