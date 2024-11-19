@@ -35,6 +35,12 @@ const ErrorMessage = ({ message }) => (
     </div>
 );
 
+const Loader = () => (
+    <div className="loader-overlay">
+      <div className="loader"></div>
+    </div>
+);
+
 const ImageGallery2 = () => {
   const { UUID: urlUUID } = useParams();
   const [uuid, setUuid] = useState(urlUUID || '');
@@ -153,7 +159,7 @@ const ImageGallery2 = () => {
                   setUuid(e.target.value);
                   setError('');
                 }}
-                placeholder="Enter UUID"
+                placeholder="Enter BatchID"
                 className="uuid-input"
             />
             <button
@@ -168,13 +174,7 @@ const ImageGallery2 = () => {
 
         {error && <ErrorMessage message={error} />}
 
-        {isLoading && (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <span>Loading images...</span>
-            </div>
-        )}
-
+        {isLoading && <Loader />}
         {!isLoading && imageCount > 0 && (
             <div className="image-count">
               <p>{`Number of images in this batch: ${imageCount}`}</p>

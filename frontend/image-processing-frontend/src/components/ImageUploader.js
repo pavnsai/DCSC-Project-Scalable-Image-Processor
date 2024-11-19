@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './ImageUploader.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Alert = ({ children }) => (
   <div className="error-alert">
     {children}
   </div>
+);
+const Loader = () => (
+    <div className="loader-overlay">
+      <div className="loader"></div>
+    </div>
 );
 
 const ImagePreview = ({ file, index }) => {
@@ -39,6 +45,9 @@ const ImageUploader = () => {
   const [openAccordions, setOpenAccordions] = useState([]);
   const [imageErrors, setImageErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
     const selectedFiles = [...event.target.files];
@@ -201,7 +210,8 @@ const ImageUploader = () => {
       setIsSubmitDisabled(true);
       return;
     }
-
+    setIsLoading(true);
+    setIsSubmitting(true);
     const formData = new FormData();
     files.forEach((file) => {
       formData.append('files', file);
@@ -228,17 +238,32 @@ const ImageUploader = () => {
         });
         console.log(response)
         if (response.status === 200) {
-            alert('Images uploaded successfully!');
+            // alert('Images uploaded successfully!');
+          toast.success('Images uploaded successfully!');
+          setFiles([]);
+          setEmail('');
+          setMetadata([]);
+          setOpenAccordions([]);
+          setImageErrors({});
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
         } else {
-            alert('Failed to upload images. Server responded with a non-200 status code.');
+          toast.error('Failed to upload images.');
         }
     } catch (error) {
-      alert('Failed to upload images.');
+      toast.error('Failed to upload images.');
+    }
+    finally {
+      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="image-uploader">
+      <Toaster position="top-right" />
+      {isLoading && <Loader />}
       <h2 className="title">Upload Images</h2>
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
@@ -264,6 +289,7 @@ const ImageUploader = () => {
               onChange={handleFileChange}
               required
               className="file-input"
+              ref={fileInputRef}
             />
           </label>
         </div>
