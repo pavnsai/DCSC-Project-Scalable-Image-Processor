@@ -140,6 +140,8 @@ const ImageGallery2 = () => {
     }
   };
 
+  const imageCount = imagePairs.length;
+
   return (
     <div className="gallery-container">
       <form onSubmit={handleSubmit} className="search-form">
@@ -149,7 +151,7 @@ const ImageGallery2 = () => {
             value={uuid}
             onChange={(e) => {
               setUuid(e.target.value);
-              setError(''); // Clear error when user starts typing
+              setError('');
             }}
             placeholder="Enter UUID"
             className="uuid-input"
@@ -172,7 +174,11 @@ const ImageGallery2 = () => {
           <span>Loading images...</span>
         </div>
       )}
-
+      {!isLoading && imageCount > 0 && (
+          <div className="image-count">
+            <p>{`Number of images in this batch: ${imageCount}`}</p>
+          </div>
+      )}
       <div className="image-slider-grid">
         {imagePairs.map((pair, index) => (
           <div key={index} className="image-slider-card">

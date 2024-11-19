@@ -14,9 +14,9 @@ const App = () => {
             <div className="App">
                 <Header/>
                 <Routes>
-                    <Route path="/gallery/:UUID" element={<ImageGallery2/>}/>
+                    <Route path="/processed/:UUID" element={<ImageGallery2/>}/>
                     <Route
-                        path="/gallery"
+                        path="/processed"
                         element={<ImageGallery2 images={images}/>}
                     />
                     <Route path="/upload" element={<ImageUploader/>}/>

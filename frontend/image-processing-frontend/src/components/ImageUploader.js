@@ -239,7 +239,7 @@ const ImageUploader = () => {
 
   return (
     <div className="image-uploader">
-      <h2 className="title">Upload Images with Metadata</h2>
+      <h2 className="title">Upload Images</h2>
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
           <label className="form-label">
