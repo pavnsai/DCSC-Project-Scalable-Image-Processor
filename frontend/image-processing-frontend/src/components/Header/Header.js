@@ -5,13 +5,13 @@ import './Header.css';
 const Header = () => {
   return (
     <header className="header">
-      <div className="logo">
-        <h1>Image Processing App</h1>
-      </div>
-      <nav>
-        <ul className="nav-links">
-          <li>
-            <Link to="/processed" className="nav-link">Processed Images</Link>
+        <div className="logo">
+                <Link to="/" className="nav-link">Image Processing App</Link>
+        </div>
+        <nav>
+            <ul className="nav-links">
+                <li>
+                    <Link to="/processed" className="nav-link">Processed Images</Link>
           </li>
           <li>
             <Link to="/upload" className="nav-link">Upload Images</Link>

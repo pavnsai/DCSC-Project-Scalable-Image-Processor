@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'img-comparison-slider/dist/styles.css';
-import './ImageGallery2.css';
+import './ImageFetcher.css';
 
 const DownloadIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -41,7 +41,7 @@ const Loader = () => (
     </div>
 );
 
-const ImageGallery2 = () => {
+const ImageFetcher = () => {
   const { UUID: urlUUID } = useParams();
   const [uuid, setUuid] = useState(urlUUID || '');
   const [imagePairs, setImagePairs] = useState([]);
@@ -69,7 +69,7 @@ const ImageGallery2 = () => {
 
   const fetchImages = async (uuidToFetch) => {
     if (!validateUUID(uuidToFetch)) {
-      setError('Please enter a valid UUID');
+      setError('Please enter a valid BatchID');
       setImagePairs([]);
       return;
     }
@@ -264,4 +264,4 @@ const ImageGallery2 = () => {
   );
 };
 
-export default ImageGallery2;
+export default ImageFetcher;

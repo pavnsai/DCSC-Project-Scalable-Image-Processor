@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import ImageGallery from './components/ImageGallery';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import ImageUploader from './components/ImageUploader';
-import Header from "./components/Header";
-import ImageGallery2 from "./components/ImageGallery2";
+import ImageUploader from './components/ImageUploader/ImageUploader';
+import Header from "./components/Header/Header";
+import ImageFetcher from "./components/ImageFetcher/ImageFetcher";
+import HomePage from "./components/HomePage/HomePage";
+import Footer from "./components/Footer/Footer";
 
 const App = () => {
     const [images, setImages] = useState([]);
@@ -12,23 +13,19 @@ const App = () => {
     return (
         <Router>
             <div className="App">
-                <Header/>
-                <Routes>
-                    <Route path="/processed/:UUID" element={<ImageGallery2/>}/>
-                    <Route
-                        path="/processed"
-                        element={<ImageGallery2 images={images}/>}
-                    />
-                    <Route path="/upload" element={<ImageUploader/>}/>
-                    <Route
-                        path="/"
-                        element={
-                            <div>
-                                <p>Welcome to the Image Processing App. Navigate to /gallery or /upload.</p>
-                            </div>
-                        }
-                    />
-                </Routes>
+                <Header />
+                <div className="main-content">
+                    <Routes>
+                        <Route path="/processed/:UUID" element={<ImageFetcher />} />
+                        <Route
+                            path="/processed"
+                            element={<ImageFetcher images={images} />}
+                        />
+                        <Route path="/upload" element={<ImageUploader />} />
+                        <Route path="/" element={<HomePage />} />
+                    </Routes>
+                </div>
+                <Footer />
             </div>
         </Router>
     );
