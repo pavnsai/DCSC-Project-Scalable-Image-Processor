@@ -13,7 +13,7 @@ SMTP_SERVER = os.getenv('SMTP_SERVER')
 SMTP_PORT = os.getenv('SMTP_PORT')
 SMTP_USERNAME = os.getenv('SMTP_USERNAME')
 SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
-DOMAIN_NAME = os.getenv('DOMAIN_NAME', 'http://localhost.com')
+DOMAIN_NAME = os.getenv('DOMAIN_NAME', 'http://localhost:3000')
 
 
 @functions_framework.http
@@ -51,12 +51,12 @@ def pubsub_to_email(request):
                 return 'Invalid message format', 400
 
             # Prepare the email content
-            subject = f"Your Image Batch ID: {batch_id}"
+            subject = f"Your Batch ID: {batch_id}"
             body = (
                 f"Hello,\n\nYour images have been processed. "
-                f"You can view them by entering the batch ID: {batch_id} under the 'Image Gallery' tab.\n"
+                f"You can view them by entering the batch ID: {batch_id} under the 'Processed Images' tab.\n"
                 f"Alternatively, you can click the link below to directly access your gallery:\n"
-                f"{DOMAIN_NAME}/imagegallery/{batch_id}\n\n"
+                f"{DOMAIN_NAME}/#/processed/{batch_id}\n\n"
                 "Thank you for using our service!"
             )
 
