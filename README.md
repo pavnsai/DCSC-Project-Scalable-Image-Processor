@@ -58,7 +58,7 @@ From the backend folder, run the following script:
 This script automates the setup of the required Kubernetes pods and services for the application.
 
 ## System Architecture
-
+![System Architecture](DCSC-Final-Project-Architecture.jpg)
 The architecture consists of two primary APIs: POST for image uploads and GET for retrieving processed images. Here's a detailed breakdown of each component:
 
 1. **Image Handler Pod**
