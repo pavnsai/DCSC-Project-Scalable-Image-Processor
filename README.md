@@ -14,7 +14,8 @@ ImageFlow is a cloud-native application designed to handle scalable image proces
 
 This project consists of two main components:
 1. **Frontend**: A React-based user interface for image uploads and retrievals
-2. **Backend**: A set of containerized services orchestrated using Kubernetes for processing, storing, and notifying users about their images
+2. **Backend**: A combination of GCP services, including Cloud Storage, Cloud Functions, and Pub/Sub, along with containerized services orchestrated using Kubernetes. These components work together to process, store, and notify users about their images efficiently.
+
 
 ### Prerequisites
 
